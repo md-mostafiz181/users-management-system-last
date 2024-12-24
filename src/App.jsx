@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 function App() {
   const [users, setUsers] = useState([]);
+  const [mobiles,setMobiles]=useState([])
 
   useEffect(() => {
     fetch("http://localhost:5000/users")
@@ -12,6 +13,15 @@ function App() {
         setUsers(data);
       });
   }, []);
+
+  useEffect(()=>{
+    fetch("http://localhost:5000/mobiles")
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data)
+      setMobiles(data)
+    })
+  },[])
 
   const handleAddUser = (e) => {
     e.preventDefault();
@@ -52,6 +62,13 @@ function App() {
       <div>
         {
           users.map(user => <p key={user.id}>{user.id} : {user.name} : {user.email}</p> )
+        }
+      </div>
+
+      <h1>Here I will shows all mobiles data </h1>
+      <div>
+        {
+          mobiles.map(mobile=> <p key={mobile.id}>{mobile.id} : {mobile.name}{mobile.brand}</p> )
         }
       </div>
     </>
