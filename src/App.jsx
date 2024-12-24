@@ -48,6 +48,32 @@ function App() {
       });
   };
 
+  const handleAddMobile=e=>{
+    e.preventDefault();
+    const form =e.target;
+    const name=form.name.value;
+    const brand=form.brand.value;
+    const mobile = {name,brand}
+    console.log(mobile)
+
+    fetch("http://localhost:5000/mobiles",{
+      method:"POST",
+      headers:
+        {
+          "content-type": "application/json"
+        },
+        body:JSON.stringify(mobile)
+      
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data)
+      const newMobile = [...mobiles,data]
+      setMobiles(newMobile)
+      form.reset()
+    })
+  }
+
   return (
     <>
       <form onSubmit={handleAddUser}>
@@ -65,12 +91,21 @@ function App() {
         }
       </div>
 
-      <h1>Here I will shows all mobiles data </h1>
+      <h1>Here I will shows all mobiles data : {mobiles.length} </h1>
       <div>
         {
-          mobiles.map(mobile=> <p key={mobile.id}>{mobile.id} : {mobile.name}{mobile.brand}</p> )
+          mobiles.map(mobile=> <p key={mobile.id}>{mobile.id} : {mobile.name} : {mobile.brand}</p> )
         }
       </div>
+
+      <h1>Add mobile</h1>
+      <form onSubmit={handleAddMobile}>
+        <input type="text" name="name" id="" placeholder="name" />
+        <br />
+        <input type="text" name="brand" id="" placeholder="brand" />
+        <br />
+        <input type="submit" value="Add Mobile" />
+      </form>
     </>
   );
 }
